@@ -20,6 +20,20 @@ function Join-Markdowns ($Title, $Path, $OutputFile, [switch] $Overwrite) {
 			# Convert heading levels by adding one more '#' to each heading
 			if ($Line -match '^(#+)\s') {
 				$Content += "#$Line`n"
+			} elseif ($Line -match '^@import\s+"?.+\.mmd"?\s*$') {
+				Write-Debug "Found mermaid diagram import directive in $($File.FullName): $Line"
+				# import mermaid diagrams file
+				$FileName = $Line -replace '^@import\s+"?(.+\.mmd)"?\s*$', '$1'
+				$importFullPath = Join-Path -Path $File.DirectoryName -ChildPath $FileName
+				if (-not (Test-Path -Path $importFullPath)) {
+					Write-Warning "Import file not found: $importFullPath"
+					$Content += "$Line (NOT IMPORTED)`n"
+				} else {
+					$Content += "``````mermaid`n"
+					$Content += Get-Content -Path $importFullPath -Raw
+					$Content += "```````n"
+				}
+				Write-Information "Imported mermaid diagram from $importFullPath"
 			} else {
 				$Content += "$Line`n"
 			}
@@ -27,5 +41,5 @@ function Join-Markdowns ($Title, $Path, $OutputFile, [switch] $Overwrite) {
 		$OutputContent += $Content + "`n" # Add a newline between files
 	}
 	Set-Content -Path $OutputFile -Value $OutputContent
-	Write-Host "Markdown files have been successfully joined into $OutputFile"
+	Write-Information "Markdown files have been successfully joined into $OutputFile"
 }
