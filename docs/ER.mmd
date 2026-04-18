@@ -1,0 +1,41 @@
+---
+title: ER Diagram
+---
+erDiagram
+  User {
+    uuid key PK "UUID v7"
+    string login_id UK
+    string passwd UK
+    uuid division_id FK "UUID v7"
+  }
+  Division {
+    uuid key PK "UUID v7"
+    string name "NOT NULL"
+  }
+  Kintai {
+    uuid key PK "UUID v7"
+    uuid user_id FK "UUID v7"
+    date date "NOT NULL"
+    time start_time "NOT NULL"
+    time end_time "NOT NULL"
+    boolean is_holiday "NOT NULL"
+  }
+  Travel {
+    uuid key PK "UUID v7"
+    uuid user_id FK "UUID v7"
+    date date "NOT NULL"
+    money amount  "NOT NULL"
+    string description "NOT NULL"
+  }
+  Overtime_Application {
+    uuid key PK "UUID v7"
+    uuid user_id FK "UUID v7"
+    date date "NOT NULL"
+    interval duration "NOT NULL"
+    string reason "NOT NULL"
+  }
+  User 1--1 Division : belong_to
+  User 1--0+ Kintai : has
+  Kintai 1--0+ Travel : has
+  User 1--0+ Overtime_Application : has
+  Overtime_Application 1--1 Kintai : related_to
