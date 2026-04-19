@@ -3,33 +3,33 @@ title: ER Diagram
 ---
 erDiagram
   User {
-    uuid key PK "UUID v7"
+    uuid key PK
     string login_id UK
     string passwd UK
-    uuid division_id FK "UUID v7"
+    uuid division_id FK
   }
   Division {
-    uuid key PK "UUID v7"
+    uuid key PK
     string name "NOT NULL"
   }
   Kintai {
-    uuid key PK "UUID v7"
-    uuid user_id FK "UUID v7"
+    uuid key PK
+    uuid user_id FK
     date date "NOT NULL"
     time start_time "NOT NULL"
     time end_time "NOT NULL"
     boolean is_holiday "NOT NULL"
   }
   Travel {
-    uuid key PK "UUID v7"
-    uuid user_id FK "UUID v7"
+    uuid key PK
+    uuid user_id FK
     date date "NOT NULL"
     money amount  "NOT NULL"
     string description "NOT NULL"
   }
   Overtime_Application {
-    uuid key PK "UUID v7"
-    uuid user_id FK "UUID v7"
+    uuid key PK
+    uuid user_id FK
     date date "NOT NULL"
     interval duration "NOT NULL"
     string reason "NOT NULL"
